@@ -106,7 +106,7 @@ class SeoUrlPersister
         try {
             $this->obsoleteIds($obsoleted, $dateTime);
 
-            RetryableQuery::retryable(function () use ($insertQuery): void {
+            RetryableQuery::retryable($this->connection, function () use ($insertQuery): void {
                 $insertQuery->execute();
             });
 
@@ -216,7 +216,7 @@ class SeoUrlPersister
             $query->setParameter('salesChannelId', Uuid::fromHexToBytes($salesChannelId));
         }
 
-        RetryableQuery::retryable(function () use ($query): void {
+        RetryableQuery::retryable($this->connection, function () use ($query): void {
             $query->execute();
         });
     }
